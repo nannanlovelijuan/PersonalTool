@@ -1,4 +1,4 @@
-package nan.scala.practicalguide.workingwithobject
+package nan.practicalguide.workingwithobject
 
 class Car(val year: Int) {
 

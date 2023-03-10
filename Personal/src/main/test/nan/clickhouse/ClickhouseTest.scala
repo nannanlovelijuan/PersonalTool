@@ -1,4 +1,4 @@
-package nan.scala.clickhouse
+package nan.clickhouse
 
 import org.scalatest.FlatSpec
 import ru.yandex.clickhouse.except.ClickHouseException

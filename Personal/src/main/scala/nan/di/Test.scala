@@ -1,4 +1,4 @@
-package nan.scala.jdbc
+package nan.di
 
 object Test {
 

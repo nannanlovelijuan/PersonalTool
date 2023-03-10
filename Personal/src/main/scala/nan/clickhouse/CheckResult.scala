@@ -1,4 +1,4 @@
-package nan.scala.clickhouse
+package nan.clickhouse
 
 class CheckResult(val success: Boolean) {
 

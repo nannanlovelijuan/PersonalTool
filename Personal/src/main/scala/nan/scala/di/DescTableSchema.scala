@@ -1,4 +1,4 @@
-package nan.scala.jdbc
+package nan.scala.di
 
 import scalikejdbc.{SQLSyntaxSupport, WrappedResultSet}
 

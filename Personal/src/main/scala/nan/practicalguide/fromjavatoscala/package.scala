@@ -1,4 +1,4 @@
-package nan.scala.practicalguide
+package nan.practicalguide
 
 /**
  * 第三章，从java到scala

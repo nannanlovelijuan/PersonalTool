@@ -1,4 +1,4 @@
-package nan.scala.practicalguide.fromjavatoscala
+package nan.practicalguide.fromjavatoscala
 
 /**
  * 默认值

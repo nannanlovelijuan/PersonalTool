@@ -1,4 +1,4 @@
-package nan.scala.practicalguide.workingwithobject
+package nan.practicalguide.workingwithobject
 
 /**
  * 查看字节码

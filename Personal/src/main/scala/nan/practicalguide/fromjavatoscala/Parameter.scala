@@ -1,4 +1,4 @@
-package nan.scala.practicalguide.fromjavatoscala
+package nan.practicalguide.fromjavatoscala
 
 object Parameter {
 

@@ -1,5 +1,4 @@
-package nan.scala.practicalguide.fromjavatoscala
-
+package nan.practicalguide.fromjavatoscala
 
 /**
  * 隐式参数：由调用者来决定所传递的默认值

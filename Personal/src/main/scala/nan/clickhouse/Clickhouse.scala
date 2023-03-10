@@ -1,4 +1,4 @@
-package nan.scala.clickhouse
+package nan.clickhouse
 
 import ru.yandex.clickhouse.{BalancedClickhouseDataSource, ClickHouseConnectionImpl}
 
@@ -146,8 +146,6 @@ object Clickhouse {
       case "String" =>
         ""
     }
-
-
   }
 
 

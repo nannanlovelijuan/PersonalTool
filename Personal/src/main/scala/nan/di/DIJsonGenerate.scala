@@ -1,4 +1,4 @@
-package nan.scala.jdbc
+package nan.di
 
 import org.json4s.{Formats, NoTypeHints}
 import org.json4s.jackson.Serialization
@@ -10,7 +10,9 @@ import scalikejdbc.{
 
 import scala.collection.mutable.ArrayBuffer
 
-/*数据一体化json生成配置*/
+/**
+ * 数据一体化生成json配置
+ */
 object DIJsonGenerate {
   Class.forName("com.mysql.jdbc.Driver")
 
