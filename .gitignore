@@ -5,3 +5,9 @@ Personal/target/*
 .metals/*
 .vscode/*
 Personal/Personal.iml
+Personal/.settings/*
+Personal/.metals/*
+Personal/.bloop/*
+Personal/.classpath
+Personal/.project
+Personal/.vscode/settings.json
