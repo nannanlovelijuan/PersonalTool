@@ -23,7 +23,7 @@
             "type": "scala",
             "request": "launch",
             "name": "DIJsonGenerate",
-            "mainClass": "nan.scala.jdbc.DIJsonGenerate",
+            "mainClass": "nan.di.DIJsonGenerate",
             "args": [],
             "jvmOptions": []
         }

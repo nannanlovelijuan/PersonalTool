@@ -5,7 +5,9 @@ import org.json4s.jackson.Serialization
 import scalikejdbc.{
   AutoSession,
   ConnectionPool,
-  scalikejdbcSQLInterpolationImplicitDef
+  scalikejdbcSQLInterpolationImplicitDef,
+  SQLSyntaxSupport,
+  WrappedResultSet
 }
 
 import scala.collection.mutable.ArrayBuffer
@@ -88,4 +90,20 @@ object DIJsonGenerate {
     )
   }
 
+}
+
+// 数据一体化配置实体类
+case class FieldSchema(FieldName: String, FieldType: String, Index: Int, FieldFormat: String, IsNativeField: Int, FieldAlias: String, IsKey: Int)
+
+// mysql 表字段属性
+case class DescTableSchema(Extra: String, Field: String, Null: String, Type: String, Key: String)
+object DescTableSchema extends SQLSyntaxSupport[DescTableSchema] {
+
+  //override val tableName = DescTableSchema.tableName
+  def apply(rs: WrappedResultSet) = new DescTableSchema(
+    rs.string("Extra"),
+    rs.string("Field"),
+    rs.string("Null"),
+    rs.string("Type"),
+    rs.string("Key"))
 }
