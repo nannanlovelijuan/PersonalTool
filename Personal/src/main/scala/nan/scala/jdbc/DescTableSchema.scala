@@ -3,14 +3,6 @@ package nan.scala.jdbc
 import scalikejdbc.{SQLSyntaxSupport, WrappedResultSet}
 
 case class DescTableSchema(Extra: String, Field: String, Null: String, Type: String, Key: String)
-//{
-//  private var tableName: String = _
-//
-//  def this(Extra: String, Field: String, Null: String, Type: String, Key: String, tableName: String) {
-//    this(Extra,Field,Null,Type,Key)
-//    this.tableName = tableName
-//  }
-//}
 
 object DescTableSchema extends SQLSyntaxSupport[DescTableSchema] {
 

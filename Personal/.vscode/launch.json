@@ -5,15 +5,26 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Main",
+            "projectName": "Personal"
+        },
+        {
             "type": "scala",
             "request": "launch",
-            // configuration name visible for the user
             "name": "Test",
-            // full name of the class to run
             "mainClass": "nan.scala.jdbc.Test",
-            // optional arguments for the main class
             "args": [],
-            // optional jvm properties to use
+            "jvmOptions": []
+        },
+        {
+            "type": "scala",
+            "request": "launch",
+            "name": "DIJsonGenerate",
+            "mainClass": "nan.scala.jdbc.DIJsonGenerate",
+            "args": [],
             "jvmOptions": []
         }
     ]
