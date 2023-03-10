@@ -1,0 +1,7 @@
+Personal/.idea/*
+Personal/Personal/.idea/*
+Personal/Personal/target/*
+Personal/target/*
+.metals/*
+.vscode/*
+Personal/Personal.iml
