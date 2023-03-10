@@ -1,0 +1,36 @@
+# 券包活动分析
+
+###
+# 券包活动分析-概览接口
+POST http://localhost:9001/Gift/GiftBag/GetOverviewNew HTTP/1.1
+Content-Type: application/json
+Cookie: sensorsdata2015jssdkcross=%7B%22distinct_id%22%3A%22116857%22%2C%22%24device_id%22%3A%221849d0024bb1401-060d0ec3e66ad2-7d5d5475-2073600-1849d0024bc13a9%22%2C%22props%22%3A%7B%22%24latest_referrer%22%3A%22%22%2C%22%24latest_referrer_host%22%3A%22%22%7D%2C%22first_id%22%3A%221849d0024bb1401-060d0ec3e66ad2-7d5d5475-2073600-1849d0024bc13a9%22%7D; pcl_sid_cross=C8CF4B87C9444C94961E1597B39ACCC5; pcl_sid=C8CF4B87C9444C94961E1597B39ACCC5; pcl_brandid=1; pcl_buid=28698
+
+{
+    "SDate": "2023-02-01T05:48:30.972Z",
+    "EDate": "2023-02-28T05:48:30.972Z",
+    "Shop": "",
+    "ActName": "",
+    "ActOrigin": "456",
+    "GiftBagName": "123",
+    "OrderField": "",
+    "OrderAsc": false
+}
+
+###
+# 券包活动分析-概览接口
+POST https://crm-q1.ezrpro.com/api/bigData/Gift/GiftBag/GetOverviewNew HTTP/1.1
+Content-Type: application/json
+Cookie: pcl_sid=802CF2B3FD254AE58040FB6990B0776F; pcl_sid_cross=802CF2B3FD254AE58040FB6990B0776F; pcl_brandid=429; pcl_buid=807756; pcl_brandid=429; sensorsdata2015jssdkcross=%7B%22distinct_id%22%3A%2221038920%22%2C%22%24device_id%22%3A%221849d0024bb1401-060d0ec3e66ad2-7d5d5475-2073600-1849d0024bc13a9%22%2C%22props%22%3A%7B%22%24latest_referrer%22%3A%22%E5%8F%96%E5%80%BC%E5%BC%82%E5%B8%B8%22%2C%22%24latest_referrer_host%22%3A%22%E5%8F%96%E5%80%BC%E5%BC%82%E5%B8%B8%22%7D%2C%22first_id%22%3A%221849d0024bb1401-060d0ec3e66ad2-7d5d5475-2073600-1849d0024bc13a9%22%7D
+
+{
+    "SDate": "2023-02-01T05:48:30.972Z",
+    "EDate": "2023-02-28T05:48:30.972Z",
+    "Shop": "",
+    "ActName": "",
+    "ActOrigin": "",
+    "GiftBagName": "",
+    "OrderField": "",
+    "OrderAsc": false,
+    "DateType":1
+}

@@ -1,0 +1,12 @@
+{
+    "sqltools.connections": [
+        {
+            "port": 8123,
+            "previewLimit": 50,
+            "driver": "ClickHouse",
+            "name": "dev_ezp_crm",
+            "server": "192.168.12.243",
+            "database": "ezp_crm"
+        }
+    ]
+}
