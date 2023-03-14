@@ -1,12 +1,26 @@
 {
     "sqltools.connections": [
         {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "192.168.12.41",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "192.168.12.41",
+            "group": "mysql",
+            "username": "ezwrite",
+            "database": "ezp-mall1"
+        },
+        {
             "port": 8123,
             "previewLimit": 50,
             "driver": "ClickHouse",
             "name": "dev_ezp_crm",
             "server": "192.168.12.243",
-            "database": "ezp_crm"
+            "database": "ezp_crm",
+            "group": "clickhouse"
         }
     ]
 }
