@@ -2,20 +2,14 @@ package nan.di
 
 import org.json4s.{Formats, NoTypeHints}
 import org.json4s.jackson.Serialization
-import scalikejdbc.{
-  AutoSession,
-  ConnectionPool,
-  scalikejdbcSQLInterpolationImplicitDef,
-  SQLSyntaxSupport,
-  WrappedResultSet
-}
+import scalikejdbc.{AutoSession, ConnectionPool, SQLSyntaxSupport, WrappedResultSet, scalikejdbcSQLInterpolationImplicitDef}
 
 import scala.collection.mutable.ArrayBuffer
 
 /**
  * 数据一体化生成json配置
  */
-object DIJsonGenerate {
+object DIJsonGenerate extends Loggable{
   Class.forName("com.mysql.jdbc.Driver")
 
   ConnectionPool.singleton(
@@ -48,6 +42,8 @@ object DIJsonGenerate {
 
     implicit val formats: Formats = Serialization.formats(NoTypeHints)
     val aa = Serialization.write(out)
+
+    info("--------->"+aa)
     println(aa)
   }
 
