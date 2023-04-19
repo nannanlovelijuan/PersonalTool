@@ -27,11 +27,24 @@ Content-Type: application/json
 }
 
 ### 导出接口 api/CouponGrpAct/ExportBirthdayCoupon
-
 POST http://localhost:5000/api/CouponGrpAct/ExportBirthdayCoupon HTTP/1.1
 Content-Type: application/json
 
 {
     "YearMonth": "2023-02",
     "IsRegMonth": 1
+}
+
+### 销售业绩导出接口 api/CouponGrpAct/ExportSaleStatCoupon
+POST http://localhost:5000/api/CouponGrpAct/ExportSaleStatCoupon HTTP/1.1
+Content-Type: application/json
+
+{
+    "StartDate": "2023-02-01",
+    "EndDate": "2023-02-28",
+    "TimeType":"day",
+    "BrandId":"1",
+    "OrgQueryType":1,
+    "QueryId":[1],
+    "IncludeOfflineShop":true
 }

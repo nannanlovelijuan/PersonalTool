@@ -7,7 +7,7 @@
 -yjm 2048m \
 -ytm 4096m \
 -class ezp.bigdata.rtp.task.WholeStationTask \
--s hdfs://HDFS81394/checkpoints10/wholeStationTaskV2/39da514233be9a0d2e7ac91f2272d0ec/chk-1638/_metadata \
+-s hdfs://HDFS81394/checkpoints10/wholeStationTaskV2/6901f79294af13dec75c6fc37f752690/chk-1789/_metadata \
 -jar /data/mall-behavior-rtp/mall-behavior-rtp-1.0.0.jar 172.21.66.137:9092 WholeStationTask hdfs://HDFS81394/checkpoints10/wholeStationTaskV2/ 172.21.65.40,172.21.65.76,172.21.65.167,172.21.17.232,172.21.16.53 es_bigdata_behavisor 10 &
 
 
@@ -205,131 +205,19 @@ SellChannel GLOBAL In (21157693,21158944,21380558,21508246,21491584,21226635,211
 
 下载领券多：页面查询只包含上架门店，下载包括下架门店的问题
 
+nan
+nanchen123
+
+https://github.com/Reamd7/notion-zh_CN/releases/
 
 
-1、分帐单一定是分销单吗？和分销单有什么关系 
-分帐单和分销单没有关系
+mvn package skipPySpark3Tests
 
-2、分账明细表里面的商品供应商Id（ItemSupplierId）是bd_sys_supplier里面的Id吗？
-
-分销拥挤和工厂佣金是到订单明细的
-平台佣金和门店是到订单的
+mvn clean package -B -V -e -Pspark-3.3.0 -Pthriftserver -DskipTests -DskipITs -DskipPySpark3Tests -Dmaven.javadoc.skip=true
 
 
-订单表里没有是否分销单的标记，只能通过订单Id去分销明细订单里去关联
+mvn clean package -B -V -e -Pthriftserver -DskipTests -DskipITs -DskipPySpark3Tests -Dmaven.javadoc.skip=true
+http://mirror.bit.edu.cn/apache/incubator/livy/0.5.0-incubating/livy-0.5.0-incubating-bin.zip
 
 
-
-1、南极电商订单明细报表
-
-1、订单编号（mall_sales_order.Code）
-2、订单状态（mall_sales_order.OrderStatus）
-3、分账状态（bd_sys_supplier.LedgerStatus）
-4、工厂（bd_sys_supplier.SupplierName）
-5、店铺（ed_base_shop.Name）
-6、分销员姓名（ed_base_sys_user.Name/crm_vip_info.Name）
-7、下单日期（mall_sales_order.OrderTime）
-8、付款日期（mall_sales_order.PayTime）
-9、发货日期（mall_sales_order.HasSendTime,需要接入）
-10、确认收货日期（mall_sales_order_extend.ReceivingTime，需要接入）
-11、分账日期（mall_supplier_ledger.LastModifiedDate现在没有，可以取最后更新时间）
-12、SKU(mall_supplier_ledger_dtl.ItemNo)
-13、吊牌价（mall_sales_order_dtl.RetailPrice）
-14、成交价（mall_sales_order_dtl.AvgAmount）
-15、标准金额（吊牌价*Sku数量）
-16、实付金额（mall_sals_order.PayAmout）包含运费的实付？,明细的不包含运费
-17、折扣率(实付金额-运费)/标准金额
-18、店铺活动优惠金额（）?
-19、优惠券优惠金额（CouponUseAmount）
-20、分销佣金（mall_supplier_ledger_dtl.FxMoney？）
-21、店铺分账金额（mall_supplier_ledger.ShopMoney）
-22、平台服务费金额（mall_supplier_ledger.BrandMoney）
-23、工厂分账金额（mall_supplier_ledger_dtl.SupplierMoney）
-
-计算逻辑：以分账明细表为主表去join各个表（导购分销和微客分销如何解决？） 分销/订单/分销员/等字段都冗余到分账明细表里
-由于是到sku和到分销员的，所以统计的逻辑是到分账明细的，会存在一个订单编号有多条数据
-
-a.一笔订单编号会有多条数据，是到sku的
-b.分销员姓名的获取，如果是导购分销需要去用户表里取，如果是微客分销去会员表里面取
-c.店铺活动优惠金额目前没办法直接获取，门店所能参加的优惠活动，需要针对每一笔订单去取
-d.确认收货时间在订单上没有，在扩展表上面，需要冗余字段
-
-2、平台分账报表
-
-1、付款日期（mall_sales_order.PayTime）
-2、工厂（bd_sys_supplier.SupplierName）
-3、店铺：（ed_base_shop.Name)
-4、分销员：（ed_base_sys_user.Name/crm_vip_info.Name）
-5、销售数量：mall_sales_order_dtl.Quantity
-6、销售金额：mall_sales_order_dtl.Quantity* mall_sales_order_dtl.AvgAmount
-7、出库数量：MALL_SALES_ORDER_EXPRESS_DTL.ExpQty,订单状态变成已发货
-8、出库金额：mall_supplier_ledger_dtl.ItemCostPrice * MALL_SALES_ORDER_EXPRESS_DTL.ExpQty
-9、退货数量：mall_sales_order_ref_mapping.Qty(申请退货包含)
-10、退货金额：mall_sales_order_ref_mapping.AmountMenory
-11、入库数量：mall_sales_order_ref.RefundStatus = 2&&mall_sales_order_ref_mapping.Qty（确认退货退款状态）
-12、入库金额：mall_sales_order_ref.RefundStatus = 2&&mall_sales_order_ref_mapping.AmountMenory
-13、合计付款金额：销售金额-退货金额？还是销售金额？
-14、工厂分账金额：截止查询当前，工厂分账金额（mall_supplier_ledger_dtl.SupplierEstimateMoney）
-15、工厂已到账金额：截止查询当前，工厂已到账金额（mall_supplier_ledger_dtl.SupplierMoney）
-16、工厂未到账金额：截止查询当前，工厂分账-已到账
-17、店铺分账金额：截止查询当前，店铺分账金额
-18、店铺已到账金额：截止查询当前，店铺已到账金额（mall_supplier_ledger.ShopMoney）
-19、店铺未到账金额：截止查询当前，店铺分账-已到账
-20、分销佣金：（mall_supplier_ledger_dtl.FxMoney？）
-
-
-
-统计维度到工厂，门店，分销员，支付日期？
-
-以订单明细表为主表
-a.分销员按照逗号分隔吗？
-
-工厂-供应商
-平台-品牌
-店铺-门店
-
-出库-发货
-入库-退货
-
-
-
-
-
-
-1、应该都是实时
-2、分销员的信息获取？目前该需求只有导购分销，不排除后面有微客分销?是否可以冗余到fx_person上（冗余的话要支持名称改变的场景，要新的）
-3、数据量级无法评估，未上线
-
-
-对于明细报表：到订单，到sku
-1、一笔订单编号会有多条数据
-2、店铺活动优惠金额目前没办法直接获取
-3、确认收货时间在订单表上没有，建议冗余字段
-
-对于平台报表：到分销员，不到订单，sku
-出库数量：发货时间在所选时间范围的发货件数
-退货数量：需要接入退货表
-工厂分账金额是工厂预计分账金额吗
-店铺分账金额是店铺预计分账金额吗
-上面筛选是按照付款时间，销售数量是下单时间？
-到分销员的，不到订单级别
-
-店铺分账报表：到sku，订单
-分销员信息是否可以和其它报表保持一致？
-到sku的一个订单编号会有多条数据
-店铺相较于明细多了出库，入库
-
-
-工厂分账报表：到sku的统计
-到sku级别的统计
-
-1、店铺活动优惠金额
-2、时间
-时间待确认：
-10.1- 10.31
-
-10.31下了订单
-
-11.1退单了
-
-
+{ "connector.class":"www.ezrpro.bigdata.connectors.hdfs.HdfsSinkConnector", "partition.duration.ms":"10000", "hadoop.conf.dir":"/opt/hadoop-conf-dir", "flush.size":"1000", "topics":"EZR_EVENT-0", "tasks.max":"3", "timezone":"Asia/Shanghai", "store.url":"hdfs://nameserviceha", "rotate.interval.ms":"3600000", "consumer.override.fetch.min.bytes":"10485760", "locale":"zh_CN", "consumer.override.fetch.max.wait.ms":"30000", "format.class":"www.ezrpro.bigdata.connectors.hdfs.string.StringFormat", "consumer.override.max.poll.records":"20000", "partitioner.class":"io.confluent.connect.storage.partitioner.TimeBasedPartitioner", "name":"EZR_EVENT-0-hdfs", "path.format":"YYYY/MM/dd", "rotate.schedule.interval.ms":"3600000", "auto.offset.reset":"latest" }

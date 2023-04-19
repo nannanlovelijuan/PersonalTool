@@ -1,0 +1,43 @@
+
+### 新建
+POST http://192.168.12.34:6083/connectors HTTP/1.1
+Content-Type: application/json
+
+{ "name":"EZR_EVENT-0-hdfs-test",
+  "config":{
+    "connector.class": "www.ezrpro.bigdata.connectors.hdfs.HdfsSinkConnector",
+    "hadoop.conf.dir": "/opt/hadoop-conf-dir",
+    "flush.size":1000,
+    "topics": "EZR_EVENT-0",
+    "tasks.max": "1",
+    "timezone": "Asia/Shanghai",
+    "store.url": "hdfs://nameserviceha",
+    "locale": "zh_CN",
+    "format.class": "www.ezrpro.bigdata.connectors.hdfs.string.StringFormat",
+    "partitioner.class": "io.confluent.connect.storage.partitioner.TimeBasedPartitioner",
+    "name": "EZR_EVENT-0-hdfs-test",
+    "path.format": "YYYY/MM/dd",
+    "auto.offset.reset": "latest",
+  }
+}
+
+### 删除
+DELETE http://192.168.12.34:6083/connectors/EZR_EVENT-0-hdfs-test HTTP/1.1
+
+
+
+PUT  http://192.168.12.34:6083/connectors/init-0-ck-test/config HTTP/1.1
+Content-Type: application/json
+
+{ 
+    "connector.class":"www.ezrpro.bigdata.connectors.ck.JsonSinkClickHouseConnector",
+    "out.columns.exist.shardingid":"true",
+    "tasks.max":"1",
+    "topics":"init",
+    "name":"init-0-ck-test",
+    "errors.tolerance":"all",
+    "clickhouse.url":"jdbc:clickhouse://192.168.12.46:8082",
+    "out.columns.exist.datacenter":"true",
+    "out.columns.exist.op.type":"true",
+    "consumer.override.fetch.max.wait.ms":50000
+}
