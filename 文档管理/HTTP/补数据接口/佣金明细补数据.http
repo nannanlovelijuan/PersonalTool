@@ -1,0 +1,9 @@
+POST http://base.dataops.q1cloud.ezrpro.in/Data/PushCanalData HTTP/1.1
+Content-Type: application/json
+
+{
+    "BrandId": 429,
+    "DbName":"mall",
+    "TableName":"mall_fx_order_commssion",
+    "PKIdList":[21]
+}
