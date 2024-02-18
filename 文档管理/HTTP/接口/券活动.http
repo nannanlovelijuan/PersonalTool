@@ -1,0 +1,157 @@
+POST http://localhost:5000/api/CouponGrpAct/GetCouponActAgg HTTP/1.1
+Content-Type: application/json
+
+{
+  "brandId": 0,
+  "startDate": "2023-11-01T06:19:48.645Z",
+  "endDate": "2023-11-01T06:19:48.645Z",
+  "actId": 0,
+  "actOrigin": "string",
+  "status": 8,
+  "sellChannel": 0,
+  "couponNo": "string",
+  "vipId": 0,
+  "couponGrpId": 0,
+  "excludeCouponOrigin": [
+    0
+  ]
+}
+
+###
+POST http://localhost:5000/api/CouponGrpAct/GetCouponDetail HTTP/1.1
+Content-Type: application/json
+
+{
+  "brandId": 0,
+  "startDate": "2023-11-01T06:18:17.216Z",
+  "endDate": "2023-11-01T06:18:17.216Z",
+  "status": 0,
+  "sellChannel": 0,
+  "couponNo": "string",
+  "vipId": 0
+}
+
+###
+POST http://192.168.12.116:40852/Base/Config/GetShowMenuByConfig
+Content-Type: application/json
+Cookie: Hm_lvt_e28dada1b683a2145254643cfcba355d=1680148168; __bid_n=18730a27f968592a307dc8; pcl_sid=3ABEDA8282F64B87ADB19F61A74EA615; pcl_sid_cross=3ABEDA8282F64B87ADB19F61A74EA615; pcl_brandid=1; pcl_buid=28955; pcl_brandid=1; sensorsdata2015jssdkcross=%7B%22distinct_id%22%3A%22116753%22%2C%22%24device_id%22%3A%221849d0024bb1401-060d0ec3e66ad2-7d5d5475-2073600-1849d0024bc13a9%22%2C%22props%22%3A%7B%22%24latest_referrer%22%3A%22%22%2C%22%24latest_traffic_source_type%22%3A%22%E8%87%AA%E7%84%B6%E6%90%9C%E7%B4%A2%E6%B5%81%E9%87%8F%22%2C%22%24latest_search_keyword%22%3A%22%E6%9C%AA%E5%8F%96%E5%88%B0%E5%80%BC%22%2C%22%24latest_referrer_host%22%3A%22%22%7D%2C%22first_id%22%3A%221849d0024bb1401-060d0ec3e66ad2-7d5d5475-2073600-1849d0024bc13a9%22%7D; ezr-env-tag=d4683; tag-expires-time=3
+
+{"MenuName":"VipAnalysis"}
+
+###
+POST http://localhost:9001/Base/Config/GetShowMenuByConfig
+Content-Type: application/json
+Cookie: Hm_lvt_e28dada1b683a2145254643cfcba355d=1680148168; __bid_n=18730a27f968592a307dc8; pcl_sid=3ABEDA8282F64B87ADB19F61A74EA615; pcl_sid_cross=3ABEDA8282F64B87ADB19F61A74EA615; pcl_brandid=1; pcl_buid=28955; pcl_brandid=1; sensorsdata2015jssdkcross=%7B%22distinct_id%22%3A%22116753%22%2C%22%24device_id%22%3A%221849d0024bb1401-060d0ec3e66ad2-7d5d5475-2073600-1849d0024bc13a9%22%2C%22props%22%3A%7B%22%24latest_referrer%22%3A%22%22%2C%22%24latest_traffic_source_type%22%3A%22%E8%87%AA%E7%84%B6%E6%90%9C%E7%B4%A2%E6%B5%81%E9%87%8F%22%2C%22%24latest_search_keyword%22%3A%22%E6%9C%AA%E5%8F%96%E5%88%B0%E5%80%BC%22%2C%22%24latest_referrer_host%22%3A%22%22%7D%2C%22first_id%22%3A%221849d0024bb1401-060d0ec3e66ad2-7d5d5475-2073600-1849d0024bc13a9%22%7D; ezr-env-tag=d4683; tag-expires-time=3
+
+{"MenuName":"VipAnalysis"}
+
+### ReportSite-二级菜单商品支付件数Top5排行-GetCKMallSalesProdItemIdTop
+## SelectType 1 MallSalesOrderType 1 OrderType 1 "OrderAscType":1 "GetTotalRowsCount":false
+POST http://localhost:5000/api/SalesPordReport/GetCKMallSalesProdItemId
+Content-Type: application/json
+
+ {"ShopType":"","SelectShopsStr":"","Keyword":null,"ItemIds":null,"BarIds":null,"StartDate":"2023-12-27 00:00:00","EndDate":"2024-01-25 00:00:00","PageIndex":1,"PageSize":5,"OrderAscType":1,"OrderAsc":false,"ActTypeStr":null,"ActTypeList":["-1"],"ActIdStr":"","ActTypeListVal":[],"GetTotalRowsCount":false,"SelectType":1,"MallSalesOrderType":1,"FileName":null,"UserId":116841,"BrandId":1,"CopId":1,"DataOrigin":-1,"FlowChannel":-1,"OrderType":1}
+
+### ReportSite-二级菜单商品支付金额Top5排行-GetCKMallSalesProdItemIdTop
+### "SelectType":1 "MallSalesOrderType":1 "OrderType":1  "OrderAscType":0 "GetTotalRowsCount":false
+POST http://localhost:5000/api/SalesPordReport/GetCKMallSalesProdItemId
+Content-Type: application/json
+
+{"ShopType":"","SelectShopsStr":"","Keyword":null,"ItemIds":null,"BarIds":null,"StartDate":"2023-12-27 00:00:00","EndDate":"2024-01-25 00:00:00","PageIndex":1,"PageSize":5,"OrderAscType":0,"OrderAsc":false,"ActTypeStr":null,"ActTypeList":["-1"],"ActIdStr":"","ActTypeListVal":[],"GetTotalRowsCount":false,"SelectType":1,"MallSalesOrderType":1,"FileName":null,"UserId":116841,"BrandId":1,"CopId":1,"DataOrigin":-1,"FlowChannel":-1,"OrderType":1}
+
+### ReportSite-二级菜单退货商品TOP5排行-GetCKMallReturnProdItemIdTop
+### "SelectType":1 "MallSalesOrderType":2 "OrderType":1  "OrderAscType":1 "GetTotalRowsCount":false
+POST http://localhost:5000/api/SalesPordReport/GetCKMallSalesProdItemId
+Content-Type: application/json
+
+ {"ShopType":"","SelectShopsStr":"","Keyword":null,"ItemIds":null,"BarIds":null,"StartDate":"2023-12-27 00:00:00","EndDate":"2024-01-25 00:00:00","PageIndex":1,"PageSize":5,"OrderAscType":1,"OrderAsc":false,"ActTypeStr":null,"ActTypeList":["-1"],"ActIdStr":"","ActTypeListVal":[],"GetTotalRowsCount":false,"SelectType":1,"MallSalesOrderType":2,"FileName":null,"UserId":116841,"BrandId":1,"CopId":1,"DataOrigin":-1,"FlowChannel":-1,"OrderType":1}
+
+
+### Reporsite-二级菜单申请退货/退款商品Top5排行GetCKMallAppleReturnProdItemIdTop
+### "SelectType":不存在 "MallSalesOrderType":不存在 "OrderType":1  "OrderAscType":1 "GetTotalRowsCount":false
+POST http://localhost:5000/api/MallSalesOrderRt/GetOrderReturnAggrGByItemId
+Content-Type: application/json
+
+{"ShopIds":[],"ItemIds":null,"StartDate":"2023-12-27 00:00:00","EndDate":"2024-01-25 00:00:00","OrderAscType":1,"OrderAsc":false,"ActTypeList":["-1"],"ActTypeListVal":[],"GetTotalRowsCount":false,"DataOrigin":-1,"FlowChannel":-1,"OrderType":1,"IsComputeSamePeriodOfLastYear":false,"IsComputeSamePeriodOfUp":false,"CopId":0,"BrandId":186,"OrgQueryType":0,"QueryId":null,"OrgType":0,"OrgIdList":null,"ShopCount":0,"ClickOrgnizeType":0,"PageIndex":1,"PageSize":5,"QueryAllShop":false,"SelectFields":null,"AggrFields":null,"Conditions":null,"UserType":null,"UserOrgId":0,"IncludeOfflineShop":false}
+
+### Reporsite-三级级菜单申请退货/退款商品排行按照货号GetCKMallAppleReturnProdItemIdPage
+### "SelectType":不存在 "MallSalesOrderType":不存在 "OrderType":1  "OrderAscType":1 "GetTotalRowsCount":true
+POST http://localhost:5000/api/MallSalesOrderRt/GetOrderReturnAggrGByItemId
+Content-Type: application/json
+
+{"ShopIds":[],"ItemIds":null,"StartDate":"2023-12-27 00:00:00","EndDate":"2024-01-25 00:00:00","OrderAscType":1,"OrderAsc":false,"ActTypeList":["-1"],"ActTypeListVal":[],"GetTotalRowsCount":true,"DataOrigin":-1,"FlowChannel":-1,"OrderType":1,"IsComputeSamePeriodOfLastYear":false,"IsComputeSamePeriodOfUp":false,"CopId":0,"BrandId":186,"OrgQueryType":0,"QueryId":null,"OrgType":0,"OrgIdList":null,"ShopCount":0,"ClickOrgnizeType":0,"PageIndex":1,"PageSize":10,"QueryAllShop":false,"SelectFields":null,"AggrFields":null,"Conditions":null,"UserType":null,"UserOrgId":0,"IncludeOfflineShop":false}
+
+### Reporsite-三级级菜单申请退货/退款商品排行按商品条形码GetCKMallAppleReturnProdBarIdPage
+### "SelectType":不存在 "MallSalesOrderType":不存在 "OrderType":1  "OrderAscType":1 "GetTotalRowsCount":true
+POST http://localhost:5000/api/MallSalesOrderRt/GetOrderReturnAggrGByBarId
+Content-Type: application/json
+
+{"ShopIds":[],"BarIds":null,"StartDate":"2023-12-27 00:00:00","EndDate":"2024-01-25 00:00:00","OrderAscType":1,"OrderAsc":false,"ActTypeList":["-1"],"ActTypeListVal":[],"GetTotalRowsCount":true,"DataOrigin":-1,"FlowChannel":-1,"OrderType":1,"IsComputeSamePeriodOfLastYear":false,"IsComputeSamePeriodOfUp":false,"CopId":0,"BrandId":186,"OrgQueryType":0,"QueryId":null,"OrgType":0,"OrgIdList":null,"ShopCount":0,"ClickOrgnizeType":0,"PageIndex":1,"PageSize":10,"QueryAllShop":false,"SelectFields":null,"AggrFields":null,"Conditions":null,"UserType":null,"UserOrgId":0,"IncludeOfflineShop":false}
+
+
+### ReportSite-三级菜单商品销售排行 按货号-GetCKMallSalesProdItemIdPage
+### "SelectType":1 "MallSalesOrderType":1 "OrderType":1 "OrderAscType":0 "GetTotalRowsCount":true,
+POST http://localhost:5000/api/SalesPordReport/GetCKMallSalesProdItemId
+Content-Type: application/json
+
+{"ShopType":"","SelectShopsStr":"","Keyword":"","ItemIds":null,"BarIds":null,"StartDate":"2023-12-27 00:00:00","EndDate":"2024-01-25 00:00:00","PageIndex":1,"PageSize":10,"OrderAscType":0,"OrderAsc":false,"ActTypeStr":null,"ActTypeList":["-1"],"ActIdStr":"","ActTypeListVal":[],"GetTotalRowsCount":true,"SelectType":1,"MallSalesOrderType":1,"FileName":null,"UserId":116841,"BrandId":1,"CopId":1,"DataOrigin":-1,"FlowChannel":-1,"OrderType":1}
+
+### ReportSite-三级菜单商品销售排行 商品销售排行-GetCKMallSalesProdBarIdPage
+### "SelectType":2 "MallSalesOrderType":1 "OrderType":1 "OrderAscType":0 "GetTotalRowsCount":true,
+POST http://localhost:5000/api/SalesPordReport/GetCKMallSalesProdBarId
+Content-Type: application/json
+
+ {"ShopType":"","SelectShopsStr":"","Keyword":"","ItemIds":null,"BarIds":null,"StartDate":"2023-12-27 00:00:00","EndDate":"2024-01-25 00:00:00","PageIndex":1,"PageSize":10,"OrderAscType":0,"OrderAsc":false,"ActTypeStr":null,"ActTypeList":["-1"],"ActIdStr":"","ActTypeListVal":[],"GetTotalRowsCount":true,"SelectType":2,"MallSalesOrderType":1,"FileName":null,"UserId":116841,"BrandId":1,"CopId":1,"DataOrigin":-1,"FlowChannel":-1,"OrderType":1}
+
+
+
+
+
+### ReportSite-三级菜单-商品退货排行按货号-GetCKMallReturnProdItemIdPage
+### "SelectType":1 "MallSalesOrderType":2 "OrderType":1  "OrderAscType":1 "GetTotalRowsCount":true
+POST http://localhost:5000/api/SalesPordReport/GetCKMallSalesProdItemId
+Content-Type: application/json
+
+ {"ShopType":"","SelectShopsStr":"","Keyword":"","ItemIds":null,"BarIds":null,"StartDate":"2023-12-27 00:00:00","EndDate":"2024-01-25 00:00:00","PageIndex":1,"PageSize":10,"OrderAscType":1,"OrderAsc":false,"ActTypeStr":null,"ActTypeList":["-1"],"ActIdStr":"","ActTypeListVal":[],"GetTotalRowsCount":true,"SelectType":1,"MallSalesOrderType":2,"FileName":null,"UserId":116841,"BrandId":1,"CopId":1,"DataOrigin":-1,"FlowChannel":-1,"OrderType":1}
+
+ ### ReportSite-三级菜单-商品退货排行按商品条形码-GetCKMallReturnProdBarIdPage
+### "SelectType":2 "MallSalesOrderType":2 "OrderType":1  "OrderAscType":1 "GetTotalRowsCount":true
+POST http://localhost:5000/api/SalesPordReport/GetCKMallSalesProdBarId
+Content-Type: application/json
+
+ {"ShopType":"","SelectShopsStr":"","Keyword":"","ItemIds":null,"BarIds":null,"StartDate":"2023-12-27 00:00:00","EndDate":"2024-01-25 00:00:00","PageIndex":1,"PageSize":10,"OrderAscType":1,"OrderAsc":false,"ActTypeStr":null,"ActTypeList":["-1"],"ActIdStr":"","ActTypeListVal":[],"GetTotalRowsCount":true,"SelectType":2,"MallSalesOrderType":2,"FileName":null,"UserId":116841,"BrandId":1,"CopId":1,"DataOrigin":-1,"FlowChannel":-1,"OrderType":1}
+
+
+###
+POST http://localhost:5000/api/SalesPordReport/GetCKMallSalesProdItemId
+Content-Type: application/json
+
+{"ShopType":"","SelectShopsStr":"","Keyword":"","ItemIds":null,"BarIds":null,"StartDate":"2023-12-28 00:00:00","EndDate":"2024-01-26 00:00:00","PageIndex":1,"PageSize":10,"OrderAscType":0,"OrderAsc":false,"ActTypeStr":null,"ActTypeList":["SG","OG","JG"],"ActIdStr":"","ActTypeListVal":[],"GetTotalRowsCount":true,"SelectType":1,"MallSalesOrderType":1,"FileName":null,"UserId":116841,"BrandId":1,"CopId":1,"DataOrigin":-1,"FlowChannel":-1,"OrderType":1}
+
+
+###
+POST http://localhost:5000/api/CouponGrpAct/GetListByActIdAndActOrigin
+Content-Type: application/json
+
+{
+    "StartTime":"1970-01-01 00:00:00",
+    "EndTime":"2024-01-31 23:59:59",
+    "BrandId":1,
+    "ActInfoList":[
+        {
+            "ActId":2073963,
+            "ActOrigin":"BT"
+        },
+        {
+            "ActId":2073961,
+            "ActOrigin":"BT"
+        }
+    ],
+    "IsIncludeToday":true
+}
+
+###
+POST http://localhost:5000/api/DwdAppbxVipAggr/GetAppbxVipAggrGByDayFxtypeGuide
+Content-Type: application/json
+
+{"BeginDate":"2024-01-01 00:00:00","EndDate":"2024-01-31 00:00:00","SelectShopsStr":"","Codes":null,"ActType":-1,"ShareTimes":-1,"GetTotalRowsCount":true,"IsComputeSamePeriodOfLastYear":false,"IsComputeSamePeriodOfUp":false,"CopId":0,"BrandId":739,"OrgQueryType":0,"QueryId":null,"OrgType":0,"OrgIdList":null,"ShopCount":0,"ClickOrgnizeType":0,"PageIndex":1,"PageSize":10,"QueryAllShop":false,"SelectFields":null,"AggrFields":null,"Conditions":null,"UserType":null,"UserOrgId":0,"IncludeOfflineShop":false}

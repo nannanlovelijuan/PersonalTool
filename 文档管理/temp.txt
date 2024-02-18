@@ -94,3 +94,841 @@ H5微商城 weipage=4|5|6
     管理版-导出按员工导出api/bigData/Behavior/PageStatistics/OutExcelSapp GroupByFields: "date|shopUserCode"
     管理版-导出未登录员工导出api/bigData/Behavior/PageStatistics/OutExcelSapp GroupByFields: "userId|nosign|date"
 
+uv:date(long),operateCount:(integer),weiPage:(int),brandId(int),copId(Int),Id:(keyword),userType:(keyword),userId:(int),orgId(int)
+
+espagestatisticsinfo:date(long),shopUserCode(keyword),firstPageId(int),weiPage:(int),secondPageId:(int),shopName(keyword),forthPageId(int)
+pageName(keyword),userId(int),orgId(int),productName(keyword),wfxPv(long),pvCount(long),uvCount(long),wfxUv(long),productItemNo(keyword)
+thirdPageId(int),userType(keyword)
+
+brandId,userId,userType,orgId,date,weipage,productItemNo,productName,pageName,pageName1,pageName2,pageName3,pageName4,isweifx,pv,uv
+
+对前端的pageName进行特殊处理，线上分销 分为个人和全店
+
+AI知识回顾：
+LLM(大语言模型)
+ANI(狭义、弱人工智能) 特定领域：无人驾驶自动驾驶
+AGI(通用、强人工智能) 具备chat的能力，开始又Prompt执行各种任务的行为
+ASI（超级人工智能）具备意识
+
+chatgpt出现的意义：加速智能的涌现，使得AGI更快实现，接近AGI
+
+多模态：不仅仅文字，还有图片，视频，听到的等
+
+行业应用：基于大模型训练小模型
+
+交互方式：CUI命令式交互 - GUI图形交互 - NUI自然交互 - IUI智能交互
+
+prompt：提问
+
+6个应用回顾
+
+AIGC：AI创作->文生文
+
+无法进行上下文语境关联
+不能识别用户情绪
+无法更好的理解问题，机械问答
+如何利用大模型的能力：1、使用商业大模型微调。2、基于开源大模型微调 3、训练垂直小模型4、大模型外挂向量数据库
+
+答案严谨，避免胡说八道
+
+
+语音助手，语音识别
+文生图
+
+RPA:机器人流程自动化
+
+(fxOrder.RtAgree= 'true' or fxOrder.RtAgree ='1')
+
+
+BrandId
+PageName
+PageName1
+PageName2
+PageName3
+PageName4
+PvCnt
+DistinctId
+ShopId
+Code
+UserType
+Date
+WeiPage
+ProductName
+productItemNo
+isWeiFx
+year
+
+
+
+CREATE TABLE ezp_crm.dws_sr_event_user_di ON CLUSTER default_cluster (
+    `BrandId` Int64 COMMENT '品牌ID',
+    `PageName` String COMMENT '页面名称',
+    `PageName1` String COMMENT '页面名称',
+    `PageName2` String COMMENT '页面名称',
+    `PageName3` String COMMENT '页面名称',
+    `PageName4` String COMMENT '页面名称',
+    `PvCnt` Int64 COMMENT 'pv',    
+    `DistinctId` String COMMENT '唯一标识',
+    `ShopId` Int32 COMMENT '门店Id',
+    `Code` String COMMENT '用户Code',
+    `UserType` String COMMENT '用户类型',
+    `Date` Int32 COMMENT '日期',
+    `WeiPage` Int8 COMMENT '行为类型',
+    `ProductName` String COMMENT '商品名称',
+    `ProductItemNo` String COMMENT '商品No',
+    `IsWeiFx` String COMMENT '是否为微fx访问',
+    `Year` Int32 COMMENT '年'
+  ) ENGINE = ReplicatedMergeTree(
+    '/clickhouse/tables/{shard}/ezp_crm.dws_sr_event_user_di',
+    '{replica}'
+  ) PARTITION BY (BrandId,Year)
+ORDER BY
+  (
+    WeiPage,
+    Date
+  ) SETTINGS index_granularity = 8192
+
+ spark-submit \
+ --master yarn \
+ --conf spark.driver.extraJavaOptions='-DdbName=q1 -Denv=uat -Ddbenv=q1 -Dapollo.meta=http://172.21.1.50 -XX:+TraceClassPaths' \
+ --conf spark.yarn.user.classpath.first=true \
+ --conf spark.executor.extraClassPath=/data/lib/guava-29.0-jre.jar \
+ --conf spark.executor.extraLibraryPath=/data/lib/guava-29.0-jre.jar \
+ --files /data/ezr-bd-spark-hive/q1Conf/jdbc.properties,/data/ezr-bd-spark-hive/q1Conf/application.conf \
+ --jars /data/EZR.BigData.Framework.Tool/q1/EZR.BigData.FrameWork.Data-2.0.32-jar-with-dependencies.jar,/data/EZR.BigData.Framework.Tool/q1/EZR.BigData.FrameWork.Data.Busi-2.0.32-jar-with-dependencies.jar,/data/lib/guava-29.0-jre.jar,/data/lib/ST4-4.3.1.jar,/data/lib/antlr-runtime-3.5.2.jar,/data/lib/ezr-clickhouse-jdbc-0.2.4.2.jar,/data/lib/druid-1.2.8.jar,/data/lib/elasticsearch-hadoop-5.1.1.jar \
+ --num-executors 2 \
+ --executor-cores 2 \
+ --executor-memory 2G \
+ --driver-memory 2G \
+ --proxy-user hadoop \
+ --name BehaviorAnaylizeJob_q1 \
+ --class ezr.bigdata.jobs.batch.framework.batch.BatchJobStartup \
+ --queue q1 \
+ --deploy-mode cluster \
+ /data/EZR.BigData.Jobs.Batch.Engine/q1/EZR.BigData.Jobs.Batch.Engine-1.0.0.jar ezr.bigdata.jobs.batch.event.behavior.BehaviorAnalysisToCk 2023-08-02 2023-08-03
+
+
+spark-submit --master yarn --conf spark.driver.extraJavaOptions='-DdbName=product -Denv=uat -Ddbenv=pro -Dapollo.meta=http://172.21.1.50 -XX:+TraceClassPaths' --conf spark.yarn.user.classpath.first=true --conf spark.executor.extraClassPath=/data/lib/guava-29.0-jre.jar --conf spark.executor.extraLibraryPath=/data/lib/guava-29.0-jre.jar --files /data/ezr-bd-spark-hive/proConf/jdbc.properties,/data/ezr-bd-spark-hive/proConf/application.conf --jars /data/EZR.BigData.Framework.Tool/1.0.0/EZR.BigData.FrameWork.Data-2.0.32-jar-with-dependencies.jar,/data/EZR.BigData.Framework.Tool/1.0.0/EZR.BigData.FrameWork.Data.Busi-2.0.32-jar-with-dependencies.jar,/data/lib/guava-29.0-jre.jar,/data/lib/ST4-4.3.1.jar,/data/lib/antlr-runtime-3.5.2.jar,/data/lib/ezr-clickhouse-jdbc-0.2.4.2.jar,/data/lib/druid-1.2.8.jar,/data/lib/elasticsearch-hadoop-5.1.1.jar --num-executors 4 --executor-cores 2 --executor-memory 4G --driver-memory 8G --proxy-user hadoop --name BehaviorAnaylizeJob_pro --class ezr.bigdata.jobs.batch.framework.batch.BatchJobStartup --queue mallJob --deploy-mode cluster /data/EZR.BigData.Jobs.Batch.Engine/pro/EZR.BigData.Jobs.Batch.Engine-1.1.34.jar ezr.bigdata.jobs.batch.event.behavior.BehaviorAnalysisToCk 20230801 20230815 186
+
+And toMonth(SellTime) == toMonth(toDate(replace(replace(replace((case when Birthday = '' then '1970-01-01 00:00:00' else Birthday end),'年','-'),'月','-'),'日','')))
+
+/
+/ 每张报表可以选择不通字段吗？
+
+
+
+
+api/bigData/CrmData/CrmCouponActivity/DownCouponActTask
+api/bigData/CrmData/CrmCouponActivity/DownCouponActTask
+api/bigData/CrmData/CrmCouponActivity/DownCouponActTask
+
+听完课最深的感受就是敬佩，不管是SAAS这个赛道的选择，还是前后端分离的前瞻性选择以及底层封装的可扩展性设计等从今天看都是无比正确的选择，所以很是佩服。
+如果回到8年前，我会从可维护性和可扩展性的角度来考虑和设计，能为后续系统不断的迭代奠定基础
+目前ChatGPT很火，希望数据和AI能够结合，挖掘数据的价值，展现数据的魅力，为客户决策提供数据支持
+EZR技术进化史才讲了第一课，听完这节课后，了解到了华哥他们当时的心里历程，也学习到了很多技术细节，感觉收获很多，所以非常想听到后续的分享
+
+1、使用统计ck化开发
+2、fx迭代配合上线
+3、AIGC参与讨论
+
+
+1、使用统计ck化开发及联调
+2、AIGC-Api封装
+3、crm报表细化券部分配合上线
+4、优惠券七月迭代-开发
+
+q1操作：
+
+1、ck表添加字段
+2、业务数据库mysql需要先添加字段
+3、配置添加字段,两个配置
+4、确认统一接入是否要修改
+5、确认数据接入成功
+
+
+,
+  {
+    "FieldName":"AppSystem",
+    "FieldType":"String",
+    "Index":54,
+    "IsNativeField":1
+  }
+
+  230911Release-41857月优惠券统一接入
+
+要求：
+	BrandId必传
+	门店和片区不能同时查询
+	必须有开始日期和结束日期
+
+1、求单个招募数（单个门店的招募数，单个导购的招募数，单个片区的招募数，单个店群的招募数）
+
+2、分组查看（门店的招募数Top，各个片区的招募数）
+
+3、
+
+
+活动销售收入：Now.ActGetMoney
+  同比：(Now.ActGetMoney-Up.ActGetMoney/Up.ActGetMoney)*100
+
+活动收入占比：Now.ActGetMoney/上面一个接口的金额
+  同期：Up.ActGetMoney/上面一个接口的金额(同期)
+
+核销数：Now.SellTotal
+
+
+{"BrandIds": "429", "DbCode": "ezp-crm", "TableName": "crm_coupon_consume_dtl", "ConsumerGroupId": "BigDataIntegrationPush", "FromId": "0", "PkName": "Id", "PkType": "Number", "PageSize": 100}	
+
+spark-submit --master yarn --conf spark.driver.extraJavaOptions='-DdbName=product -Denv=uat -Ddbenv=pro -Dapollo.meta=http://172.21.1.50 -XX:+TraceClassPaths' --conf spark.yarn.user.classpath.first=true --conf spark.executor.extraClassPath=/data/lib/guava-29.0-jre.jar --conf spark.executor.extraLibraryPath=/data/lib/guava-29.0-jre.jar --files /data/ezr-bd-spark-hive/proConf/jdbc.properties,/data/ezr-bd-spark-hive/proConf/application.conf --jars /data/EZR.BigData.Framework.Tool/1.0.0/EZR.BigData.FrameWork.Data-2.0.32-jar-with-dependencies.jar,/data/EZR.BigData.Framework.Tool/1.0.0/EZR.BigData.FrameWork.Data.Busi-2.0.32-jar-with-dependencies.jar,/data/lib/guava-29.0-jre.jar,/data/lib/ST4-4.3.1.jar,/data/lib/antlr-runtime-3.5.2.jar,/data/lib/ezr-clickhouse-jdbc-0.2.4.2.jar,/data/lib/druid-1.2.8.jar,/data/lib/elasticsearch-hadoop-5.1.1.jar --num-executors 4 --executor-cores 2 --executor-memory 4G --driver-memory 8G --proxy-user hadoop --name BehaviorAnaylizeJob_pro --class ezr.bigdata.jobs.batch.framework.batch.BatchJobStartup --queue mallJob --deploy-mode cluster /data/EZR.BigData.Jobs.Batch.Engine/pro/EZR.BigData.Jobs.Batch.Engine-1.1.34.jar ezr.bigdata.jobs.batch.event.behavior.BehaviorAnalysisToCk 20230821 20230828 186
+互动中心
+
+
+
+
+            var distinctField = "DistinctId";
+            if (request.WeiPage.Equals("1") || request.WeiPage.Equals("2"))
+            {
+                distinctField = "Code";
+            }
+
+spark-submit --master yarn --conf spark.driver.extraJavaOptions='-DdbName=product -Denv=uat -Ddbenv=pro -Dapollo.meta=http://172.21.1.50 -XX:+TraceClassPaths' --conf spark.yarn.user.classpath.first=true --conf spark.executor.extraClassPath=/data/lib/guava-29.0-jre.jar --conf spark.executor.extraLibraryPath=/data/lib/guava-29.0-jre.jar --files /data/ezr-bd-spark-hive/proConf/jdbc.properties,/data/ezr-bd-spark-hive/proConf/application.conf --jars /data/EZR.BigData.Framework.Tool/1.0.0/EZR.BigData.FrameWork.Data-2.0.32-jar-with-dependencies.jar,/data/EZR.BigData.Framework.Tool/1.0.0/EZR.BigData.FrameWork.Data.Busi-2.0.32-jar-with-dependencies.jar,/data/lib/guava-29.0-jre.jar,/data/lib/ST4-4.3.1.jar,/data/lib/antlr-runtime-3.5.2.jar,/data/lib/ezr-clickhouse-jdbc-0.2.4.2.jar,/data/lib/druid-1.2.8.jar --num-executors 4 --executor-cores 2 --executor-memory 4G --driver-memory 4G --proxy-user hadoop --name  VipInfoJoinBeginGradeToCKNew40026 --class ezr.bigdata.jobs.batch.framework.batch.BatchJobStartup --queue crmJob --deploy-mode cluster /data/EZR.BigData.Jobs.Batch.Engine/pro/EZR.BigData.Jobs.Batch.Engine-1.1.29.jar ezr.bigdata.jobs.batch.crm.vip.VipInfoJoinBeginGradeToCKByShardGrpOrBrandIdsTool '{"isInit":1,"shardGrpId":40017,"brandIds":[752,831,835,842,851,852,853,855,867,868,870,878,883,886,898,925,1078,1079,1102,2489,3799,4939]}'
+
+ALTER TABLE ezp_crm.crm_vip_info_new on cluster default_cluster DELETE WHERE BrandId in (752,831,835,842,851,852,853,855,867,868,870,878,883,886,898,925,1078,1079,1102,2489,3799,4939)
+
+
+
+spark-submit \
+--master yarn \
+--conf spark.driver.extraJavaOptions='-DdbName=product -Denv=uat -Ddbenv=pro -Dapollo.meta=http://172.21.1.50 -XX:+TraceClassPaths' \
+--conf spark.yarn.user.classpath.first=true \
+--conf spark.executor.extraClassPath=/data/lib/guava-29.0-jre.jar \
+--conf spark.executor.extraLibraryPath=/data/lib/guava-29.0-jre.jar \
+--files /data/ezr-bd-spark-hive/proConf/jdbc.properties,/data/ezr-bd-spark-hive/proConf/application.conf \
+--jars /data/EZR.BigData.Framework.Tool/1.0.0/EZR.BigData.FrameWork.Data-2.0.40-jar-with-dependencies.jar,/data/EZR.BigData.Framework.Tool/1.0.0/EZR.BigData.FrameWork.Data.Busi-2.0.40-jar-with-dependencies.jar,/data/lib/guava-29.0-jre.jar,/data/lib/ST4-4.3.1.jar,/data/lib/antlr-runtime-3.5.2.jar,/data/lib/ezr-clickhouse-jdbc-0.2.4.2.jar,/data/lib/druid-1.2.8.jar,/data/lib/elasticsearch-hadoop-5.1.1.jar \
+--num-executors 4 \
+--executor-cores 2 \
+--executor-memory 4G \
+--driver-memory 8G \
+--proxy-user hadoop \
+--name LoadBehaviorEventDataToHive_pro \
+--class ezr.bigdata.jobs.batch.framework.batch.BatchJobStartup \
+--queue mallJob \
+--deploy-mode cluster \
+/data/EZR.BigData.Jobs.Batch.Engine/pro/EZR.BigData.Jobs.Batch.Engine-1.1.32.jar ezr.bigdata.jobs.batch.event.behavior.LoadBehaviorEventDataToHive 20230213
+
+
+
+
+hadoop fs -cp ofs://f4mzuis0weh-2Vj8.chdfs.ap-beijing.myqcloud.com/usr/hive/warehouse/behavior.db/event/dat=202201* ofs://f4mzuis0weh-2Vj8.chdfs.ap-beijing.myqcloud.com/usr/hive/warehouse/product.db/event/
+
+
+Alter Table ezp_crm.crm_vip_info_new Delete Where BrandId = 179 And Id Global In(Select Id From ezp_crm.crm_vip_info_new_all Where BrandId = 179 And ExecuteDateInt =20230905) And ExecuteDateInt < 20230905
+
+
+业绩：
+
+待办：品牌获取shard，统一接入工具
+
+job合并
+airflow调度配置
+reportsite+reportapi
+提醒前端发版
+提醒经纬
+9月份刷数据
+
+update ods_bigdata_job_task_history set status= 3 where Id = 80816001
+
+update ods_bigdata_job_task_history set status= 1 where Id = status = 4
+
+
+ ezr.bigdata.jobs.batch.event.behavior.BehaviorAnalysisToCk 20230905 20230905
+
+
+ spark-submit --master yarn --conf spark.driver.extraJavaOptions='-DdbName=product -Denv=uat -Ddbenv=pro -Dapollo.meta=http://172.21.1.50 -XX:+TraceClassPaths' --conf spark.yarn.user.classpath.first=true --conf spark.executor.extraClassPath=/data/lib/guava-29.0-jre.jar --conf spark.executor.extraLibraryPath=/data/lib/guava-29.0-jre.jar --files /data/ezr-bd-spark-hive/proConf/jdbc.properties,/data/ezr-bd-spark-hive/proConf/application.conf --jars /data/EZR.BigData.Framework.Tool/1.0.0/EZR.BigData.FrameWork.Data-2.0.32-jar-with-dependencies.jar,/data/EZR.BigData.Framework.Tool/1.0.0/EZR.BigData.FrameWork.Data.Busi-2.0.32-jar-with-dependencies.jar,/data/lib/guava-29.0-jre.jar,/data/lib/ST4-4.3.1.jar,/data/lib/antlr-runtime-3.5.2.jar,/data/lib/ezr-clickhouse-jdbc-0.2.4.2.jar,/data/lib/druid-1.2.8.jar --num-executors 4 --executor-cores 2 --executor-memory 4G --driver-memory 4G --proxy-user hadoop --name  VipInfoJoinBeginGradeToCKNew40026 --class ezr.bigdata.jobs.batch.framework.batch.BatchJobStartup --queue crmJob --deploy-mode cluster /data/EZR.BigData.Jobs.Batch.Engine/pro/EZR.BigData.Jobs.Batch.Engine-1.1.29.jar ezr.bigdata.jobs.batch.crm.vip.VipInfoJoinBeginGradeToCKByShardGrpOrBrandIdsTool '{"isInit":1,"shardGrpId":40026,"brandIds":[1072]}'
+
+
+// 分组统计，
+
+ 招募会员场景：
+ 1、会员总数：会员总数
+ 2、日期趋势：最近3个月，按照日期统计招募趋势
+ 3、某个门店/片区
+ 4、门店TopN
+ 
+
+
+ 1、表多，品牌多，kafka分区，5分钟延迟
+
+表的排序字段
+
+
+
+新老会员占比
+会员年龄分布
+会员性别分布
+会员等级分布
+
+1、迭代bug
+2、新增场景
+
+    private static final Logger logger = LoggerManager.getLogger(AIGCCServiceImpl.class.toString());
+
+
+/usr/java/jdk1.8.0_161/bin/java -Xms64m -Xmx1024m -DappName=EasyBI -Denv=q1 -DlogDir=/data/EZR.BigData.EasyBI.Web/1.0.0/logs -jar EZR.BigData.EasyBI.Web-1.0.0.jar --spring.profiles.active=q1 --server.port=8082 
+
+/usr/java/jdk1.8.0_161/bin/java -Xms64m -Xmx1024m -DappName=EasyBI -Denv=q1 -DlogDir=/data/EZR.BigData.EasyBI.Web/1.0.0/logs -jar EZR.BigData.EasyBI.Web-1.0.0.jar --spring.profiles.active=q1 --server.port=8082 
+
+
+1、报表应用中每次提问都是新会话，不带上下文
+2、控制台打印命中的函数，请求参数，及耗时，便于调试
+3、对报表应用做了什么样的提示（微调）？
+4、配合联调优化结束
+
+1、支持会员和业绩相关数据的统计
+
+2、EAI演示
+
+
+ck表加字段
+配置修改
+
+
+curl -X POST -H "Content-Type: application/json" -H "cookie:0cb734ad-2e29-ca8f-d6d6-534062f342b8" -d '{"CountField":"Id","VipRegTimeBeginDate":"2023-08-08","VipRegTimeEndDate":"2023-09-07","BrandId":429}' http://localhost:8082/api/aigc/getVipSaleAgg
+
+
+
+金丝雀：20231213Release-4631
+
+券包：20231208Release-4578
+券es：20231218Release-4411
+
+//数据概览 
+  会员招募人数：微信人数，POS人数
+  当前有消会员占比
+  门店非会员入会率
+  当前累计销售贡献：按照渠道的贡献
+    
+//招募场景
+  导购引导
+  会员裂变
+  其它
+  维度：开卡场景
+  指标：招募人数，当前累计销售贡献
+//招募趋势
+
+
+组织维度必须有：门店
+
+每个函数必须包含的字段，有些字段必须有值，有些字段可以没有值
+
+比方说必须有查询的开始日期，和结束日期。比如说门店Id，可以没有值
+
+//招募排行
+门店排名，店群排名，开卡导购排名
+Top10，Down10
+
+别名的
+sql语句的
+
+会员订单表
+
+原生名称：OwnerChannel
+别名：OrderWithshop
+data:OwnerChannel
+取数据：getOwnerChannel
+
+
+原生：UnionID
+别名：UnionId
+sql: UnionID as UnionId
+data：UnionId
+
+取数据：getUnionID()
+
+
+
+"kafka.server":"192.168.128.216:9092",
+
+行为轨迹-行为过期数据删除20230601
+20041
+user_behavior_track_*
+{  
+  "query": {  
+    "range": {  
+      "dt": {  
+        "lt": "20230501"  
+      }  
+    }  
+  }  
+}
+
+导购引导：
+App对面送券：49
+扫门店二维码：6
+
+会员裂变：
+邀请有礼：98
+
+
+GetListES被调用逻辑：GenDateBegEndSearchSellDate没有被赋值
+
+  GetIsExeSellList ：无日期
+  GetShopVipCoupListSell：  begSellDate，endSellDate 排序字段sellDate
+  GetShopVipCoupList：salerType确认使用
+  ExecTotal：无日期
+  GetList：无日期
+
+
+
+接口1：api/CouponGrpAct/GetListByCrmActCouponGrpInfos
+
+接口2：api/CouponGrpAct/GetCouponListInfoDetail
+
+
+需要重新运行的sparkjob及每个job单天预估耗时
+
+先运行
+DspUserStatusTagNew 15min
+
+这几个可以同步运行：
+BackLinkSpuAnalyJob 30min 
+BackLinkUserDayAnalyJob 30min
+BackLinkVisitDayAnalyJob 3min
+DwsDspBlOrderDtlDi 6min
+LandPageJobNew 2h
+NewRegisterVipJob 1min
+
+这两个依赖于BackLinkUserDayAnalyJob运行完成后运行
+BackLinkUserDayAggAnalyJob 1min
+BackLinkWholeAnalyJobNew 3min
+
+运行一天的数据需要2h30min
+需要重跑35天的数据 那么 (2h*30min)*35
+
+java -cp /data/consume-main/app/lib/consume-generic-1.0.0.jar ezp.bigdata.consume.send.generic.readfile.ReadFileGenericAppCollector ofs://f4mzuis0weh-2Vj8.chdfs.ap-beijing.myqcloud.com/youshu/raw/2023/12/16/07
+
+1）销售看板
+
+2）销售看板-经营总概况-门店销售排行二级页
+
+3）销售看板-销售排行二级页
+
+4）销售看板-申请退货/退款排行二级页
+
+5）销售看板-退货排行二级页
+
+销售看板
+接口一：GetCKMallBusinessOverview------------>SalesDashboardOverview
+ods_mall_sales_order_all OrderActType
+ods_mall_sales_order_ref_all OrderActType
+
+接口二：GetCKMallSalesTrendListChart---------->GetSalesOrderRunChart
+ods_mall_sales_order_all OrderActType
+ods_mall_sales_order_ref_all OrderActType
+
+接口三：GetCKMallSalesProdItemIdTop-------->GetCKMallSalesProdItemId
+ods_mall_sales_order_dtl_all OrderActType
+
+接口四：GetCKMallReturnProdItemIdTop
+ods_mall_sales_order_ref_mapping_all （not(has(AggrField1,13001)) and IsReturn = 1 and hasAny(OrderActType,['GS']) ）
+
+接口五：GetCKMallAppleReturnProdItemIdTop-------->GetOrderReturnAggrGByItemId
+ods_mall_sales_order_rt_mapping_all OrderActType
+
+接口五：GetCKMallMemberSalesBoardListNew--------->GetCKMallMemberSalesBoardListNew
+ods_mall_sales_order_all OrderActType
+
+接口六：GetMallRefundBoard------------->SalesRefundOverview
+ods_mall_sales_order_ref_mapping_all OrderActType
+ods_mall_sales_order_ref_all OrderActType
+
+接口七：GetMallRefundReasonRankingListNew---------->GetMallRefundReasonRankingList
+ods_mall_sales_order_ref_all  OrderActType
+
+接口八：GetCKMallWxAppletPayChannelSourceTOP10New--------->GetCKMallWxAppletPayChannelSourceTOP10
+ods_mall_sales_order_all OrderActType
+
+
+销售看板-经营总概况-门店销售排行二级页
+GetCKMallShopSalesRankingOverview---------->GetCKMallShopSalesRankingListNew
+ods_mall_sales_order_ref_all OrderActType
+ods_mall_sales_order_all OrderActType
+
+
+销售看板-销售排行二级页
+GetCKMallSalesProdItemIdPage----------->GetCKMallSalesProdItemId
+ods_mall_sales_order_dtl_all OrderActType
+
+GetCKMallSalesProdBarIdPage---------->GetCKMallSalesProdBarId
+ods_mall_sales_order_dtl_all OrderActType
+
+
+销售看板-申请退货/退款排行二级页
+GetCKMallAppleReturnProdItemIdPage-------->GetOrderReturnAggrGByItemId
+ods_mall_sales_order_rt_mapping_all OrderActType
+
+GetCKMallAppleReturnProdBarIdPage---------->GetOrderReturnAggrGByBarId
+ods_mall_sales_order_ref_mapping_all OrderActType
+
+
+销售看板-退货排行二级页
+GetCKMallReturnProdItemIdPage------------->GetCKMallSalesProdItemId
+ods_mall_sales_order_ref_mapping_all OrderActType
+
+GetCKMallReturnProdBarIdPage------------》GetCKMallSalesProdBarId
+ods_mall_sales_order_ref_mapping_all OrderActType
+
+纯积分兑换 BONUS 80470d62a94645db89b76641efd1f3f6 
+积分加钱兑换 MBONUS 179a88e9eacf404580f172302d8a8024
+动态积分兑换  DTBONUS cad09cc337ea4c61b8bdf9a26ece97cb
+套餐  PA  e12f0d86e8f8403c992f5f8c86270ee8
+一口价  FI  48c39fff77db45a3af848c6c67901710
+一口折  FD  07f03ede1b2c4ad09f099fff7732f746
+N元N件  PQ  06ebfa36e27b47a6afb77e0f37f095f3
+单品团  SG  73d2b9145e404a089da64ef564884f5c 不存在
+多品团  DG  3935d98120ae487fb109728eb582c4c4  不存在
+砍价  BA  3df497212b5649c2b82cd477c2741146
+直播  LIVE  4b9671675b704aad9a7e04afd3d44aa4
+限券抢购  LC  506212aa66c54533b2254769d10689b9
+全款预售  PRE 84639e78604940a7b631323db3244fae
+定金预售  DPRE  ce196c690cf745d1a85afe78ecc0791d
+秒杀  MS  718efd9501ea4359af328b15477952c9
+限时优惠  DC  1ce9690dd2d44340b864fbf328ffa27d
+满减  FR  171f1d1c23ed4977a0d7c7b269b05cc2
+满折  DS  a315972bfe974be197d0514887a386e6
+满赠  GSO 43aa620c224b44b5b8b7f24a25a77e48
+赠品商品库  GS  58f39db07e614790a6f213d9e433c5c2
+加价换购  EXO 618d202af0bd4d3da0d8df63dbe4e0b7
+加价换购商品  EX  b3e6c830647f42eabe83dea691537707
+新人专享  NUEL  d5e66828ee78448fa6b357079a2550a5
+
+
+1、券相关迭代开发：券转赠，券活动分析添加类型，券es去除一期及二期，券包分析增加导出内容
+2、AIGC报表项目推进
+3、
+
+
+券转赠开发完成
+券活动分析添加活动类型开发完成
+语料讨论
+ckparts迭代完成80%
+1、券邀请有礼测试支持及上线
+
+2、券转赠联调完成
+
+3、ck parts迭代已上线
+
+4、AIGC语料丰富整理及讨论
+
+5、朋友圈迭代开发30%
+
+6、自定义渠道迭代数据同步支持
+1、AIGC语料丰富整理及讨论
+
+2、朋友圈迭代开发及联调完成
+
+3、券转赠上线支持
+1、AIGC训练模型测试
+
+2、数据同步修改字段错误优化迭代开发完成
+
+3、crm券es剥离一期迭代Reportapi开发完成
+
+1、朋友圈测试支持
+
+2、Kafka-conn增加字段支持优化迭代上线
+
+3、AIGC生成报表模型训练及测试
+
+1、AIGC Assistant function重新整理
+
+2、crm_sal_vip_sale表问题处理
+
+3、学生认证券活动和券包活动分析开发完成
+
+1、crm券es剥离一期迭代重新开发及联调
+
+2、crm_sal_vip_sale刷数据支持
+
+3、券同步过程中消费组reblance导致的数据问题处理
+
+4、ckprd5集群升级及品牌迁移支持
+
+1、券es去除一期迭代测试支持
+
+2、ck卓诗尼迁移支持
+
+3、券导出优化开发完成
+
+4、AIGC测试及汇报
+
+5、ES删除
+
+1、券es去除二期开发完成
+
+2、券包分析增加导出内容迭代开发完成
+
+3、ES删除中
+
+4、AIGC汇报演示及新知识库整理和函数开发30%
+
+1、券es去除一期+券包分析增加导出内容迭代上线支持
+
+2、券es去除二期开发完成。待联调
+
+3、ES删除进行中完成90%
+
+4、spider广告重刷数据20%
+
+5、AIGC知识库文档整理及讨论
+
+1、spider广告重刷数据20%
+
+2、AICG Assistant 知识库整理及讨论
+
+1、商城销售看板迭代需求梳理，不需要特意开发
+
+2、商城活动分析到商品级别错误问题讨论
+
+
+http://192.168.12.124:88/@qcloud:easybiApiForQ1/api/aigc/
+
+management.server.port=-1
+
+
+http://172.21.0.62:8082
+
+1、客单价不含赠品
+  关联订单明细查出赠品数量，用减法
+   select sumIf(b.Quantity,b.GiftType='GS') from (select Id from ods_mall_sales_order_all final where BrandId =186 and OrderStatus >= 2 and OrderStatus <= 1199 and IsExchange = 0 and OrderType='MALL' and PayTime >='2024-01-02 00:00:00' and PayTime <'2024-01-03 00:00:00' and toDate(OrderTime) >= '2023-11-03' and toDate(OrderTime) <= '2024-01-04' and toHour(PayTime) >= 0 and toHour(PayTime) <=23 and OpType <> 'DELETE')a global left join (
+    select sumIf(b.Quantity,b.GiftType='GS') as  from ods_mall_sales_order_dtl_all final where BrandId =186 and OrderId in (select Id from ods_mall_sales_order_all final where ) ) b on a.Id = b.OrderId 
+
+            var orderDtlWhereStr = new StringBuilder($@" where BrandId ={req.BrandId} and OrderStatus >= 2 and OrderStatus <= 1199  and OrderType='MALL'");
+            orderDtlWhereStr.Append($@" and PayTime >='{req.StartDate}'");
+            orderDtlWhereStr.Append($@" and PayTime <'{req.EndDate.AddDays(1)}'");
+                orderDtlWhereStr.Append($@" and ShopId in ({string.Join(",", req.ShopIds)})");
+                orderDtlWhereStr.Append($@" and OpType <> 'DELETE' ");
+
+                string orderDtlCkTable = "ods_mall_sales_order_dtl_all";
+                (select sum(Quantity) as GSTotal from {orderDtlCkTable} final  {orderDtlWhereStr} and  GiftType='GS' and  OrderId global in (select Id from {OrderCkTable} final {orderWhereStr}))c
+
+GetCKMallWxAppletPayChannelSourceTOP10New
+SalesDashboardOverview
+  GetCKMallShopSalesRankingOverview
+2、促销分析
+
+GetShowMenuByConfig
+
+            var userShopIds = GetUserShopIds(brandId, userId, req.SelectShopsStr, req.ShopType);
+                ShopIds = userShopIds,
+
+
+请求参数：
+菜单名称-vipAnalysis
+品牌Id-BrandId
+
+GoodsAddCartMenu
+VipAddCartMenu
+UserBindWxMenu
+OperateLogMenu
+
+阿波罗配置品牌
+
+促销分析
+ShowAllvipAnalysisMenuBrands
+
+返回参数：
+{
+  ShowMenus:["GoodsAddCartMenu","VipAddCartMenu","UserBindWxMenu","OperateLogMenu"],
+  IsShowAllFields:false
+}
+
+1、新加接口测试完成
+3、随机三条可以实现（测试还不全面）
+
+
+INSERT INTO `ezp-bigdata`.`opt_bd_smartretail_topic_cfg`(`id`, `brandId`, `topicGrp`, `appId`, `appSecret`, `createTime`, `brandName`, `merchantId`, `testAppId`, `testAppSecret`, `cloudEnv`, `isOpenCps`, `isActive`) VALUES (197, 6838, '2', 'bib247b55eeca04f4b', '7b4dfdcc00134ff58fdb9d628d7100c5', '2024-01-08 11:15:23', 'VJC商城', '10064817', NULL, NULL, 'qcloud', 0, 1);
+
+INSERT INTO `ezp-ed`.`ed_smartretail_topic_cfg`(`id`, `brandId`, `topicGrp`, `appId`, `appSecret`, `createTime`, `brandName`, `merchantId`, `testAppId`, `testAppSecret`, `cloudEnv`, `isOpenCps`) VALUES (197, 6838, '2', 'bib247b55eeca04f4b', '7b4dfdcc00134ff58fdb9d628d7100c5', '2024-01-08 11:15:23', 'VJC商城', '10064817', NULL, NULL, 'qcloud', 0);
+
+
+链路结合业务场景
+
+1057开通
+1232开通
+
+select BrandId,ShopId,Date, sum(OrderPayAmount) PayAmount, sum(PayOrdersTotal) PayOrdersTotal, sum(BuyTotal) BuyTotal, sum(PayersTotal) PayersTotal, sum(AfterSaleTotal) AfterSaleTotal, sum(ExpressFeeAmout) ExpressFeeAmout, sum(OrderPayAmount)-sum(RefundAmountMoney) ActualAmount from (
+  select BrandId,ShopId,toDate(PayTime) Date, sum(PayAmount) as OrderPayAmount, count() as PayOrdersTotal, sum(BuyTotal) as BuyTotal, countIf(distinct BuyerId,BuyerId!=0) as PayersTotal, countIf(hasAny(AggrField1,[88001])) as AfterSaleTotal, sumIf(ExpressFee,ExpressFeeType = 'MY') as ExpressFeeAmout, 0 as RefundAmountMoney from ods_mall_sales_order_all final where BrandId =739 and OrderStatus >= 2 and OrderStatus <= 1199 and IsExchange = 0 and OrderType='MALL' and PayTime >='2023-12-13 00:00:00' and PayTime <'2024-01-12 00:00:00' and toDate(OrderTime) >= '2023-10-14' and toDate(OrderTime) <= '2024-01-13' and toHour(PayTime) >= 0 and toHour(PayTime) <=23 and OpType <> 'DELETE' GROUP BY BrandId,ShopId,toDate(PayTime) 
+  UNION ALL select BrandId,ShopId,toDate(FinishTime) Date, 0 PayAmount, 0 PayOrdersTotal, 0 BuyTotal, 0 PayersTotal, 0 AfterSaleTotal, 0 ExpressFeeAmout, sum(AmountMoney) as RefundAmountMoney from ods_mall_sales_order_ref_all final where BrandId =739 and RefundStatus =2 and RefundType='Order' and FinishTime >='2023-12-13 00:00:00' and FinishTime <'2024-01-12 00:00:00' and toHour(FinishTime) >=0 and toHour(FinishTime) <=23 and OpType <> 'DELETE' GROUP BY BrandId,ShopId,toDate(FinishTime)
+  UNION ALL Select BrandId,ShopId,toDate(PayTime) Date                                      0 PayAmount,
+                                     0 PayOrdersTotal,
+                                     count(1) as GSTotal,
+                                     0 PayersTotal,
+                                     0 AfterSaleTotal,
+                                     0 ExpressFeeAmout,
+                                     0 as RefundAmountMoney 
+                                                                      from WHERE ods_mall_sales_order_dtl_all final GiftType='GS' and  OrderId global in (select Id from ods_mall_sales_order_all final)GROUP BY BrandId,ShopId,toDate(PayTime) 
+
+  ) a GROUP BY BrandId,ShopId,Date ORDER BY BrandId,Date desc
+
+商品退货排行
+按货号 GetCKMallSalesProdItemId line-42
+按商品条形码 GetCKMallSalesProdBarId
+
+销售排行
+按货号 GetCKMallSalesProdItemId
+按商品条形码 GetCKMallSalesProdBarId
+
+申请退货/退款商品排行
+按货号 GetOrderReturnAggrGByItemId
+按商品条形码 GetOrderReturnAggrGByBarId
+
+
+
+  GetDtlIdByActSql.GetDtlIdByActSql
+
+  1、券bug处理
+  2、促销分析小需求修改
+  3、分销11月迭代梳理：添加手机号，沟通需求
+
+新建表及相关表添加字段
+
+  mall_sales_order 
+    BonusActId Long 积分活动Id
+    PackActId  Long 套餐一口价活动
+  
+  mall_sales_order_dtl
+    ActType Long  活动类型
+    ActId   Long  活动ID
+
+  mall_prd_prod_bonus_act 这张表已接入但是没有同步ck并且缺少字段 新增同步ck，需要修改配置，mysql要同步添加字段
+    ActType string
+
+    
+
+
+  mall_prd_prod_bonus_act_dtl 完全新接入
+
+
+  mall_pro_prod_pack_act
+
+
+
+  mall_sales_order_act
+
+
+    
+     COMMENT='商城订单活动数据'
+
+  mall_sales_order_act_dtl
+
+
+    
+     COMMENT='商城订单活动详情数据'
+
+  mall_sales_order_actphoto
+
+  CREATE TABLE `ezp_crm`.`dim_mall_sales_order_actphoto` (
+  `Id` Int32 ,
+  `CopId` Int32 ,
+  `BrandId` Int32  COMMENT '品牌编号',
+  `OrderId` Int64  COMMENT '订单编号',
+  `ActId` Int32  COMMENT '活动Id',
+  `ActType` varchar(20)  COMMENT '活动类型',
+  `ProdIds` varchar(1000)  COMMENT '商品编号集合',
+  `GiftLimt` Decimal(12,2)  COMMENT '满赠门槛',
+  `LimitType` Int32  COMMENT '门槛列表(1-元 2-件)',
+  `GiftProdId` Int64  COMMENT '赠品Id',
+  `CreateDate` DateTime  COMMENT '创建时间',
+  `ThresholdType` Int32  COMMENT '实付满赠：0：商品总价 1：实付金额',
+  `DbShardId` Int32 ,
+  `CloudType` String ,
+  `OpType` String ,
+  `PushTimestamp` Int64 ,
+  `ConsumeTimestamp` Int64 ,
+  `CanalTimestamp` Int64 ,
+  `OriginTableName` String 
+)  ENGINE = ReplicatedReplacingMergeTree(
+    '/clickhouse/tables/{shard}/ezp_crm.dim_mall_sales_order_actphoto',
+    '{replica}',
+    CanalTimestamp
+    )PARTITION BY (BrandId)
+    ORDER BY(BrandId, Id) SETTINGS index_granularity = 8192
+
+
+-- 数据库名称 ezp-mall
+-- 配置修改添加字段和目标表
+-- 创建表的语句mall_pro_prod_pack_act的时候ShareGuideText
+
+ezp-mall
+mall_sales_order_actphoto
+ezp_crm
+dim_mall_sales_order_actphoto_all
+
+
+4753合并到4736
+
+
+GetAppbxVipAggrGByDayFxtypeGuide
+
+            var pageUrls = EZP.Framework.Config.vStandard.ConfigManager.GetAppSettingString("FxShareEffectPageUrls").Split(",").Select(s=>s).ToList();
+            if (pageUrls != null && pageUrls.Count > 0)
+            {
+                whereStr.Append($@" and PageUrl in ('{pageUrls.Join("','")}') ");
+            }
+
+pages/index/index,subPages/product/details/index,subPages/product/list/index,subPages/product/category/category,subPages/orders/order/order,subPages/wei-page/micro-page/micro-page,subPages/wei-page/member-wei-page/member-wei-page,subPages/wei-page/mine-new/index,subPages/wei-page/tab-micro-page/index,subPages/wei-page/union-ticket-list/union-ticket-list,subPages/wei-page/vertical-union-ticket-list/index,subPages/wei-page/union-wei-page/union-wei-page,subPages/wei-page/wei-page-0/index,subPages/wei-page/wei-page-1/index,subPages/wei-page/wei-page-2/index,subPages/wei-page/wei-page-3/index,subPages/wei-page/wei-page-4/index
+
+https://help.fanruan.com/dvg/doc-view-2.html
+指标命名公式 = 限定词+业务主题+指标名称+量化词
+限定词
+限定词就是用来对指标进行限定约束。比如：当天、本周、当月、平均、累计
+
+业务主题
+业务主题是用来描述业务在哪个过程阶段。比如：打开页面、下单、点击支付、支付成功、支付失败。
+
+指标名称
+指标名称就是指标要统计的对象实体名称。比如：统计订单还是用户。
+
+量化词
+统计粒度是对一物理量的测定，通常以数字单位来表示。比如：数量、金额、次数、比率、占比。
+
+指标中文名称
+指标英文名称
+指标负责人
+指标定义时间
+指标业务描述
+指标代码实现
+指标涉及到表与字段
+指标更新时间
+
+综上所述，一个应该至少包含4个要素：
+
+名称：指标名称要清晰明确，避免歧义，降低沟通成本。
+责任人：责任人要保证指标可维护、可运营。
+含义：指标含义要描述的是“被量化的事实”；例如——这个指标是在什么场景下？为了什么目的？刻画了什么事实？
+口径：指标口径要保证我们能及时地、准确地取到所需的“数值”；例如——这个指标是如何计算的？所需的数据从哪获取？获取的时效如何？
+
+一级维度
+二级维度
+
+年后事情：
+1、商城活动优化
+  同步应用迭代分支4736提前上线，刷数据（表结构，配置）
+
+2、券es三期
+  同步应用迭代分支4736提前上线刷数据
+
+3、【分销】11月自然迭代(d4552)
+  Apollo配置需要添加FxShareEffectPageUrls
+
+4、订单支持礼品券转化为商品下单(d4548)
+  仅支持
+
+5、CRM券ES剥离三期迭代(d4753)
+  待上线
+
+6、客服需求迭代(d4546)
+  开发完成，待自测联调
+
+7、活动报表-内容发放情况优化(d4791)
